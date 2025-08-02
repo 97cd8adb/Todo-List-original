@@ -1,9 +1,15 @@
+
+
 div.InputTodoArea {
   background-color: rgb(147, 164, 164);
   border-radius: 10px;
   margin: 10px;
   padding: 10px;
-  width: 400px;
+  width: 406px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px; /* 入力欄とボタンの間隔 */
 }
 
 input {
@@ -11,4 +17,91 @@ input {
   border: none;
   padding: 6px 16px;
   
+}
+
+input[type = "text"]{
+  width: 100%;
+}
+
+/* 未完了のTodoエリア */
+div.IncompleteTodoArea {
+  background-color: #f5f5f5;
+  border-left: 6px solid #8bb4c7;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  width: 400px;
+}
+
+/* 完了のTodoエリア */
+div.CompleteTodoArea {
+  background-color: #e3f0e3;
+  border-left: 6px solid #90c290;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  width: 400px;
+}
+
+/* ゴミ箱内のTodo */
+div.TrashBox {
+  background-color: #fef3f3;
+  border-left: 6px solid #d99a9a;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  width: 400px;
+}
+
+/* Todoリストの各行 */
+li {
+  list-style: none;
+  background-color: #ffffff;
+  margin: 6px 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between; /* 左右に分ける */
+  align-items: center;
+}
+
+/* 左側のテキスト */
+li > span:first-child {
+  flex-grow: 1;
+  margin-right: 12px; /* テキストとボタン群の間隔 */
+  word-break: break-word;
+}
+
+/* 右側のボタン群 */
+li > span:last-child {
+  display: flex;
+  gap: 4px; /* ボタン同士の間隔を最小限に */
+}
+
+/* ボタン共通スタイル */
+input[type="button"] {
+  border-radius: 8px;
+  border: none;
+  padding: 6px 10px;
+  background-color: #6fa4c9;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* ボタン hover */
+input[type="button"]:hover {
+  background-color: #3d89b3;
+}
+
+/* 削除ボタン（ゴミ箱）だけ赤色に */
+input[type="button"][value="削除"],
+input[type="button"][value="抹消"] {
+  background-color: #e17b7b;
+}
+
+input[type="button"][value="削除"]:hover,
+input[type="button"][value="抹消"]:hover {
+  background-color: #cc5f5f;
 }
