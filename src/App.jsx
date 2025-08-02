@@ -7,7 +7,7 @@ const App = () => {
   const [incompleteTodos, setIncompleteTodos] = useState([]);
   const [completeTodos, setCompleteTodos] = useState([]);
   //応用でゴミ箱機能追加
-  const [deletedTodos, setDeletedTodos] = useState([]);
+  const [trashTodos, setTrashedTodos] = useState([]);
   const onChangeText = ( e ) => {
     //eから入力値を取得し、状態にセット
     setTodoText(e.target.value)
@@ -24,11 +24,29 @@ const App = () => {
     setIncompleteTodos(newTodos);
     setCompleteTodos([...completeTodos, incompleteTodos[targetIndex]])
   }
-  const onClickDelete = (targetIndex) => {
+  const onClickTrash = (targetIndex) => {
     //関数newTodosを定義してfilter関数を用いてtargetIndex以外があるTodoリストを作成し引渡し、ゴミ箱へ移動
     const newTodos = incompleteTodos.filter((todo, index) => index !== targetIndex);
-    setIncompleteTodos(newTodos)
-    setDeletedTodos([...deletedTodos, incompleteTodos[targetIndex]])
+    setIncompleteTodos(newTodos);
+    setTrashedTodos([...trashTodos, incompleteTodos[targetIndex]])
+  }
+  const onClickBack = (targetIndex) => {
+    //新しい完了Todoリストを作成（完了が押されたTodoをtargetIndexとし、それを除いたリスト）し、それを完了Todoリストへセット、未完了リストへtargetIndexを追加
+    const newCompleteTodos = completeTodos.filter((todo, index) => index !== targetIndex );
+    setCompleteTodos(newCompleteTodos);
+    setIncompleteTodos([...incompleteTodos, completeTodos[targetIndex]])
+  }
+  const onClickRecover = (targetIndex) => {
+    //新しい削除リスト（戻すボタンが押されたTodoをtargetIndexとし、それを除いたリスト）を作成し、trashTodosへセット、未完了リストへTargetIndexを追加
+    const newTrashedTodos = trashTodos.filter((todo, index) => index !== targetIndex )
+    setTrashedTodos(newTrashedTodos);
+    setIncompleteTodos([...incompleteTodos, trashTodos[targetIndex]])
+  }
+
+  const onClickDelete = (targetIndex) => {
+    //ゴミ箱からいらないリストを抹消
+    const newTodos = trashTodos.filter((todo, index) => index !== targetIndex);
+    setTrashedTodos(newTodos);
   }
 
   return (
@@ -52,8 +70,8 @@ const App = () => {
         {incompleteTodos.map((todo, index) => 
           <li key={index} >
             {todo}
-            <input onClick={()=> onClickComplete(index)} type="button" value="完了" />
-            <input onClick={() => onClickDelete(index)} type="button" value="削除" />
+            <input onClick={() => onClickComplete(index)} type="button" value="完了" />
+            <input onClick={() => onClickTrash(index)} type="button" value="削除" />
           </li>
         )}
       </ul>
@@ -64,16 +82,17 @@ const App = () => {
         {completeTodos.map((todo, index) => 
           <li key={index} >
             {todo}
-            <input type="button" value="戻す" />
+            <input onClick={() => onClickBack(index)} type="button" value="戻す" />
           </li>
         )}
       </ul>
       <p>ゴミ箱</p>
       <ul>
-        {deletedTodos.map((todo, index) => 
+        {trashTodos.map((todo, index) => 
           <li key={index} >
             {todo}
-            <input type="button" value="戻す" />
+            <input onClick={() => onClickDelete(index)} type="button" value="抹消" />
+            <input onClick={() => onClickRecover(index)} type="button" value="戻す" />
           </li>
         )}
       </ul>
