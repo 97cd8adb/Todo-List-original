@@ -4,8 +4,10 @@ import './App.css'
 const App = () => {
   //入力フォーム
   const [todoText, setTodoText] = useState("");
-  const [incompleteTodos, setIncompleteTodos] = useState([])
-  const [completeTodos, setCompleteTodos] = useState([])
+  const [incompleteTodos, setIncompleteTodos] = useState([]);
+  const [completeTodos, setCompleteTodos] = useState([]);
+  //応用でゴミ箱機能追加
+  const [deletedTodos, setDeletedTodos] = useState([]);
   const onChangeText = ( e ) => {
     //eから入力値を取得し、状態にセット
     setTodoText(e.target.value)
@@ -21,6 +23,12 @@ const App = () => {
     const newTodos = incompleteTodos.filter((todo, index) => index !== targetIndex );
     setIncompleteTodos(newTodos);
     setCompleteTodos([...completeTodos, incompleteTodos[targetIndex]])
+  }
+  const onClickDelete = (targetIndex) => {
+    //関数newTodosを定義してfilter関数を用いてtargetIndex以外があるTodoリストを作成し引渡し、ゴミ箱へ移動
+    const newTodos = incompleteTodos.filter((todo, index) => index !== targetIndex);
+    setIncompleteTodos(newTodos)
+    setDeletedTodos([...deletedTodos, incompleteTodos[targetIndex]])
   }
 
   return (
@@ -45,7 +53,7 @@ const App = () => {
           <li key={index} >
             {todo}
             <input onClick={()=> onClickComplete(index)} type="button" value="完了" />
-            <input type="button" value="削除" />
+            <input onClick={() => onClickDelete(index)} type="button" value="削除" />
           </li>
         )}
       </ul>
@@ -53,10 +61,21 @@ const App = () => {
     <div className="CompleteTodoArea">
       <p>完了のTodo</p>
       <ul>
-        <li>
-          todo1
-          <input type="button" value="完了" />
-        </li>
+        {completeTodos.map((todo, index) => 
+          <li key={index} >
+            {todo}
+            <input type="button" value="戻す" />
+          </li>
+        )}
+      </ul>
+      <p>ゴミ箱</p>
+      <ul>
+        {deletedTodos.map((todo, index) => 
+          <li key={index} >
+            {todo}
+            <input type="button" value="戻す" />
+          </li>
+        )}
       </ul>
     </div>
     </>
