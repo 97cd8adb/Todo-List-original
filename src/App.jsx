@@ -8,6 +8,7 @@ const App = () => {
   const [completeTodos, setCompleteTodos] = useState([]);
   //応用でゴミ箱機能追加
   const [trashTodos, setTrashedTodos] = useState([]);
+  
   const onChangeText = ( e ) => {
     //eから入力値を取得し、状態にセット
     setTodoText(e.target.value)
