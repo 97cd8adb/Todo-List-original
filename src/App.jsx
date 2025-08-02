@@ -17,6 +17,7 @@ const App = () => {
     setTodoText("")
   }
   const onClickComplete = (targetIndex) => {
+    //関数newTodsを定義してtargetIndexを除いたTodoリストを未完了のTodoリストへセットし、完了リストにtargetIndexを追加
     const newTodos = incompleteTodos.filter((todo, index) => index !== targetIndex );
     setIncompleteTodos(newTodos);
     setCompleteTodos([...completeTodos, incompleteTodos[targetIndex]])
@@ -52,10 +53,10 @@ const App = () => {
     <div className="CompleteTodoArea">
       <p>完了のTodo</p>
       <ul>
-          <li key={index} >
-            {todo}
-            <input onClick={()=> onClickComplete(index)} type="button" value="完了" />
-          </li>
+        <li>
+          todo1
+          <input type="button" value="完了" />
+        </li>
       </ul>
     </div>
     </>
