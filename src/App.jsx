@@ -68,10 +68,14 @@ const App = () => {
       <p>未完了のTodo</p>
       <ul>
         {incompleteTodos.map((todo, index) => 
-          <li key={index} >
-            {todo}
-            <input onClick={() => onClickComplete(index)} type="button" value="完了" />
-            <input onClick={() => onClickTrash(index)} type="button" value="削除" />
+          <li key={index}>
+            <span>
+              {todo}
+            </span>
+            <span>
+              <input onClick={() => onClickComplete(index)} type="button" value="完了" />
+              <input onClick={() => onClickTrash(index)} type="button" value="削除" />
+            </span>
           </li>
         )}
       </ul>
@@ -81,22 +85,32 @@ const App = () => {
       <ul>
         {completeTodos.map((todo, index) => 
           <li key={index} >
-            {todo}
-            <input onClick={() => onClickBack(index)} type="button" value="戻す" />
-          </li>
-        )}
-      </ul>
-      <p>ゴミ箱</p>
-      <ul>
-        {trashTodos.map((todo, index) => 
-          <li key={index} >
-            {todo}
-            <input onClick={() => onClickDelete(index)} type="button" value="抹消" />
-            <input onClick={() => onClickRecover(index)} type="button" value="戻す" />
+            <span>
+              {todo}
+            </span>
+            <span>
+              <input onClick={() => onClickBack(index)} type="button" value="戻す" />
+            </span>
           </li>
         )}
       </ul>
     </div>
+    <div className="TrashBox">
+      <p>ゴミ箱</p>
+        <ul>
+          {trashTodos.map((todo, index) => 
+            <li key={index} >
+            <span>
+              {todo}
+            </span>
+            <span>
+              <input onClick={() => onClickDelete(index)} type="button" value="抹消" />
+              <input onClick={() => onClickRecover(index)} type="button" value="戻す" />
+            </span>
+            </li>
+          )}
+        </ul>
+      </div>
     </>
   )
 }
