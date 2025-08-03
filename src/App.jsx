@@ -105,8 +105,8 @@ const App = () => {
               {todo}
             </span>
             <span>
-              <input onClick={() => onClickDelete(index)} type="button" value="抹消" />
               <input onClick={() => onClickRecover(index)} type="button" value="戻す" />
+              <input onClick={() => onClickDelete(index)} type="button" value="抹消" />
             </span>
             </li>
           )}
