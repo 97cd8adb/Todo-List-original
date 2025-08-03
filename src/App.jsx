@@ -1,13 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 const App = () => {
   //入力フォーム
   const [todoText, setTodoText] = useState("");
-  const [incompleteTodos, setIncompleteTodos] = useState([]);
-  const [completeTodos, setCompleteTodos] = useState([]);
+  const [incompleteTodos, setIncompleteTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("incompleteTodos");
+    return savedTodos ? JSON.parse(savedTodos) : []
+  });
+  const [completeTodos, setCompleteTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("completeTodos");
+    return savedTodos ? JSON.parse(savedTodos) : []
+  });
   //応用でゴミ箱機能追加
-  const [trashTodos, setTrashedTodos] = useState([]);
+  const [trashTodos, setTrashedTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("trashTodos");
+    return savedTodos ? JSON.parse(savedTodos) : []
+  })
+
+  useEffect (()=> {
+    localStorage.setItem("incompleteTodos",JSON.stringify(incompleteTodos));
+    localStorage.setItem("completeTodos",JSON.stringify(completeTodos));
+    localStorage.setItem("trashTodos",JSON.stringify(trashTodos));
+    },[incompleteTodos, completeTodos, trashTodos]
+    )
   
   const onChangeText = ( e ) => {
     //eから入力値を取得し、状態にセット
@@ -18,45 +34,30 @@ const App = () => {
     if(todoText === "") return;
     setIncompleteTodos([...incompleteTodos, todoText]);
     setTodoText("");
-    const todos = ([...incompleteTodos, todoText]);
-    const str = JSON.stringify(todos);
-    localStorage.setItem("addMyTodos", str);
   }
   const onClickComplete = (targetIndex) => {
     //関数newTodsを定義してtargetIndexを除いたTodoリストを未完了のTodoリストへセットし、完了リストにtargetIndexを追加
     const newTodos = incompleteTodos.filter((todo, index) => index !== targetIndex );
     setIncompleteTodos(newTodos);
     setCompleteTodos([...completeTodos, incompleteTodos[targetIndex]])
-    const todos = ([...completeTodos, incompleteTodos[targetIndex]]);
-    const str = JSON.stringify(todos);
-    localStorage.setItem("completeMyTodos", str);
   }
   const onClickTrash = (targetIndex) => {
     //関数newTodosを定義してfilter関数を用いてtargetIndex以外があるTodoリストを作成し引渡し、ゴミ箱へ移動
     const newTodos = incompleteTodos.filter((todo, index) => index !== targetIndex);
     setIncompleteTodos(newTodos);
     setTrashedTodos([...trashTodos, incompleteTodos[targetIndex]])
-    const todos = ([...trashTodos, incompleteTodos[targetIndex]]);
-    const str = JSON.stringify(todos);
-    localStorage.setItem("trashMyTodos", str);
   }
   const onClickBack = (targetIndex) => {
     //新しい完了Todoリストを作成（完了が押されたTodoをtargetIndexとし、それを除いたリスト）し、それを完了Todoリストへセット、未完了リストへtargetIndexを追加
     const newCompleteTodos = completeTodos.filter((todo, index) => index !== targetIndex );
     setCompleteTodos(newCompleteTodos);
     setIncompleteTodos([...incompleteTodos, completeTodos[targetIndex]])
-    const todos = ([...incompleteTodos, completeTodos[targetIndex]]);
-    const str = JSON.stringify(todos);
-    localStorage.setItem("backMyTodos", str);
   }
   const onClickRecover = (targetIndex) => {
     //新しい削除リスト（戻すボタンが押されたTodoをtargetIndexとし、それを除いたリスト）を作成し、trashTodosへセット、未完了リストへTargetIndexを追加
     const newTrashedTodos = trashTodos.filter((todo, index) => index !== targetIndex )
     setTrashedTodos(newTrashedTodos);
     setIncompleteTodos([...incompleteTodos, trashTodos[targetIndex]])
-    const todos = ([...incompleteTodos, trashTodos[targetIndex]]);
-    const str = JSON.stringify(todos);
-    localStorage.setItem("recoverMyTodos", str);
   }
 
   const onClickDelete = (targetIndex) => {
